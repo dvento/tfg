@@ -1,4 +1,4 @@
-# tfg
+# TFG
 Bachelor's thesis: Neuronal Networks appliedo to Startup Valuation
 Degree: Accounting and Finace
 Universtity: URV, Faculty of Economics (Reus, Spain)
