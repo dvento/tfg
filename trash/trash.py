@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import tensorflow as tf
 import functools
-from utils import preprocessing as utils
+from utils import utils as utils
 
 
 '''
@@ -59,7 +59,7 @@ utils.print_column_head(updated_active_startups)
 
 '''
 ANOTHER FILE
-preprocessing.py code ABOVE
+utils.py code ABOVE
 
 '''
 

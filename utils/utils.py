@@ -22,7 +22,7 @@ def print_column_head(dataframe):
         print(column)
 
 
-# Rename labels for a selected dataframe
+# Rename labels for a selected dataframe aka columns
 def rename_id_label(dataframe, old_label,new_label):
     dataframe.rename(columns={old_label: new_label}, inplace=True)
 
