@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 from utils import utils as pp
+from utils import graph as gp
+import matplotlib.pyplot as plt
 
 startups = pd.read_csv("../datasets/CrunchBase_MegaDataset/startups.csv")
 rounds = pd.read_csv("../datasets/CrunchBase_MegaDataset/funding_rounds.csv")
@@ -62,4 +64,59 @@ averages.reset_index(inplace=True)
 averages.drop(columns=['index'])
 
 cleaned_df = cleaned_startups.merge(averages,on='object_id')
+cleaned_df.replace({0 : np.nan})
+
+def remove_outliers(column,bound):
+
+    print("Shape before: ",cleaned_df.shape)
+
+    access = cleaned_df[column]
+    '''removed = access.between(access.quantile(0.10),access.quantile(0.70))
+    index_names = cleaned_df[~removed].index
+    cleaned_df.drop(index_names,inplace=True)'''
+    q25,q75 = cleaned_df[column].quantile(q=[0.25,0.80])
+    max = q75 + bound * (q75 - q25)
+    removed = access.between(access.quantile(0.05),max)
+    index_values = cleaned_df[~removed].index
+    cleaned_df.drop(index_values,inplace=True)
+
+    print("\nShape after: ",cleaned_df.shape)
+
+remove_outliers('avg_time_bw_rounds',3)
+remove_outliers('avg_funds_raised_usd',1)
+remove_outliers('milestones',3)
+remove_outliers('funding_rounds',6)
+remove_outliers('avg_participants',3)
+
+fig, (ax1,ax2,ax3,ax4,ax5) = plt.subplots(1,5,figsize=(15,5))
+
+ax1.boxplot(
+    cleaned_df.funding_rounds[cleaned_df.funding_rounds.notnull()]
+)
+ax1.set_title('Funding rounds per startup')
+ax2.boxplot(
+    cleaned_df.avg_funds_raised_usd[cleaned_df.avg_funds_raised_usd.notnull()]
+)
+ax2.set_title('Average funds raised per startup')
+ax3.boxplot(
+    cleaned_df.avg_time_bw_rounds[cleaned_df.avg_time_bw_rounds.notnull()]
+)
+ax3.set_title('Average months between funding rounds')
+ax4.boxplot(
+    cleaned_df.avg_participants[cleaned_df.avg_participants.notnull()]
+)
+ax4.set_title('Average participants per funding round')
+ax5.boxplot(
+    cleaned_df.milestones[cleaned_df.milestones.notnull()]
+)
+ax5.set_title('Milestones per startup')
+
+gp.adjust_title(ax1)
+gp.adjust_title(ax2)
+gp.adjust_title(ax3)
+gp.adjust_title(ax4)
+gp.adjust_title(ax5)
+
+plt.show()
+
 cleaned_df.to_csv("../datasets/cleaned_startups.csv")
