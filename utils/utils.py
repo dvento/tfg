@@ -15,13 +15,6 @@ DATA FORMAT
 dataset_key = 'object_id'
 
 
-# Print labels for a selected dataframe
-def print_column_head(dataframe):
-    print("\n")
-    for column in dataframe.columns.values:
-        print(column)
-
-
 # Rename labels for a selected dataframe aka columns
 def rename_id_label(dataframe, old_label,new_label):
     dataframe.rename(columns={old_label: new_label}, inplace=True)
